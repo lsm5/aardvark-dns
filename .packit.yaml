@@ -90,7 +90,18 @@ jobs:
     project: podman-next
     enable_net: true
 
-  # Unit tests on Fedora
+  # validate and unit tests
+  # rpm independent and sufficient to run on only one env
+  - job: tests
+    trigger: pull_request
+    packages: [aardvark-dns-fedora] # Include this else it will create multiple jobs
+    skip_build: true
+    targets:
+      - fedora-latest-stable
+    tmt_plan: "/plans/no-rpm"
+    identifier: "no-rpm"
+
+  # Integration tests on Fedora
   - job: tests
     trigger: pull_request
     packages: [aardvark-dns-fedora]
@@ -103,8 +114,10 @@ jobs:
         - artifacts:
           - type: repository-file
             id: https://copr.fedorainfracloud.org/coprs/rhcontainerbot/podman-next/repo/fedora-$releasever/rhcontainerbot-podman-next-fedora-$releasever.repo
+    tmt_plan: "/plans/rpm"
+    identifier: "rpm-fedora"
 
-  # Unit tests on CentOS Stream
+  # Integration tests on CentOS Stream
   - job: tests
     trigger: pull_request
     packages: [aardvark-dns-centos]
@@ -115,6 +128,8 @@ jobs:
         - artifacts:
           - type: repository-file
             id: https://copr.fedorainfracloud.org/coprs/rhcontainerbot/podman-next/repo/centos-stream-$releasever/rhcontainerbot-podman-next-centos-stream-$releasever.repo
+    tmt_plan: "/plans/rpm"
+    identifier: "rpm-centos"
 
   # Sync to Fedora
   - job: propose_downstream

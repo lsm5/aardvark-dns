@@ -19,18 +19,15 @@ prepare:
         dnf -y upgrade --allowerasing
       order: 20
 
-/upstream:
-    summary: Run tests on upstream PRs
+/no-rpm:
+    summary: Run tests independent of rpm
     discover+:
-        filter: tag:upstream
+        filter: tag:no-rpm
     adjust+:
         - enabled: false
           when: initiator is not defined or initiator != packit
 
-/downstream:
-    summary: Run tests on bodhi / errata and dist-git PRs
+/rpm:
+    summary: Run tests on the rpm
     discover+:
-        filter: tag:downstream
-    adjust+:
-        - enabled: false
-          when: initiator == packit
+        filter: tag:rpm
