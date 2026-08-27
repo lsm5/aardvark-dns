@@ -36,3 +36,6 @@ prepare:
     summary: MUSL test
     discover+:
         test: /musl
+    provision:
+        how: container
+        image: docker.io/library/alpine:latest

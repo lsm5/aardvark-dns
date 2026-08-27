@@ -147,9 +147,10 @@ jobs:
     trigger: pull_request
     identifier: musl
     skip_build: true
-    targets:
-      - fedora-latest-x86_64
     tmt_plan: "/plans/musl"
+    tf_extra_params:
+      environments:
+        - compose: null
 
   # Sync to Fedora
   # NOTE: Breaking changes related to Podman6 will only be shipped to Fedora
